@@ -9,6 +9,7 @@ import Flask from flask
 import Blueprint from Falsk
 import app_views from api_vi_views
 import getenv from os
+import make_response, jsonify from flask
 
 app = Flask(__name__, instance_relative_config=True)
 app.register_blueprint(app_views)
@@ -23,3 +24,7 @@ if __name__ == "__main__":
     port = getenv('HBNB_API_PORT', default=5000)
     app.run(host=host, port=int(port), threaded=True)
 
+@app.errorhandler(404)
+def handle_error():
+    """creates a handler for 404 errors"""
+    return make_response(jsonify({"error": "Not found"}), 404)
