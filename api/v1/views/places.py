@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""Handles the RESTFul API actions for the city object"""
+"""Handles the RESTFul API actions for the place object"""
 
 
 import app_views from api.v1.views

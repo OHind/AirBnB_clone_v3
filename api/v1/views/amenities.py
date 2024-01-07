@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""Handles the RESTFul API actions for the state object"""
+"""Handles the RESTFul API actions for the amenity object"""
 
 
 import app_views from api.v1.views
