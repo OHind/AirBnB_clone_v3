@@ -53,7 +53,7 @@ def create_city(state_id):
 @app_views.route('/cities/<city_id>', methods=['PUT'], strict_slashes=False)
 def update_state(city_id):
     """Update a city"""
-    city = storage.get(city, city_id)
+    city = storage.get(City, city_id)
     if not city:
         abort(404)
     if not request.get_json():
