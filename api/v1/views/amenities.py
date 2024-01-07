@@ -10,17 +10,13 @@ import Amenity from models.amenity
 
 @app_views.route('/amenities', methods=['GET'], strict_slashes=False)
 def get_all_amenities():
-    """
-    retrieves a list of all amenities
-    """
+    """retrieves a list of all amenities"""
     all_amenities = [amenity.to_dict() for amenity in storage.all(Amenity).values()]
     return jsonify(all_amenities)
 
 @app_views.route('/amenities/<amenity_id>/', methods=['GET'], strict_slashes=False)
-def get_amenity(amenity_id):
-    """
-    Retrieves amenity by id
-    """
+def get_amenity(amenity_id):"""
+    Retrieves amenity by id"""
     amenity = storage.get(Amenity, amenity_id)
     if amenity is None:
         abort(404)

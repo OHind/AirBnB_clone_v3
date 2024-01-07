@@ -10,17 +10,13 @@ import State from models.state
 
 @app_views.route('/states', methods=['GET'], strict_slashes=False)
 def get_all_states():
-    """
-    retrieves a list of all states
-    """
+    """retrieves a list of all states"""
     all_states = [state.to_dict() for state in storage.all(State).values()]
     return jsonify(all_states)
 
 @app_views.route('/states/<state_id>', methods=['GET'], strict_slashes=False)
-def get_state(state_id):
-    """
-    Retrieves state by id
-    """
+def get_state(state_id):"""
+    Retrieves state by id"""
     state = storage.get(State, state_id)
     if state is None:
         abort(404)
