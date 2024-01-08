@@ -6,6 +6,7 @@ Contains the TestDBStorageDocs and TestDBStorage classes
 from datetime import datetime
 import inspect
 import models
+from models import storage
 from models.engine import db_storage
 from models.amenity import Amenity
 from models.base_model import BaseModel
@@ -84,22 +85,22 @@ class TestFileStorage(unittest.TestCase):
         """test that new adds an object to the database"""
 
     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
-    def test_save(self): 
-     """Test that save properly saves objects to file.json"""
+    def test_save(self):
+        """Test that save properly saves objects to file.json"""
 
     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
     def test_get(self):
-    """Test the get function"""
-    state = State("Casablanca")
-    state.save()
-    last_saved = list(storage.all().values())[0]
-    cls = last_saved.__class__
-    self.assertEqual(storage.get(cls, last_saved.id), last_saved)
+        """Test get func"""
+        state = State(name="Cairo")
+        state.save()
+        first_obj = list(storage.all().values())[0]
+        clss = first_obj.__class__
+        self.assertEqual(storage.get(clss, first_obj.id), first_obj)
 
     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
     def test_count(self):
-    """Test the count function"""
-    state = State(name = "Casablanca")
-    state.save()
-    count = len(list(storage.all().values()))
-    self.assertEqual(storage.count(), count)
+        """Test count"""
+        state = State(name="Cairo")
+        state.save()
+        count = len(list(storage.all().values()))
+        self.assertEqual(storage.count(), count)
