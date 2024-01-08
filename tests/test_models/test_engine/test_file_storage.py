@@ -79,21 +79,6 @@ class TestFileStorage(unittest.TestCase):
         self.assertIs(new_dict, storage._FileStorage__objects)
 
     @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
-    def test_get(self):
-        """test the get func"""
-        storage = FileStorage()
-        first_obj = list(storage.all().values())[0]
-        clss = first_obj.__class__
-        self.assertEqual(storage.get(clss, first_obj.id), first_obj)
-
-    @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
-    def test_count(self):
-        """test the count"""
-        storage = FileStorage()
-        count = len(list(storage.all().values()))
-        self.assertEqual(storage.count(), count)
-
-    @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
     def test_new(self):
         """test that new adds an object to the FileStorage.__objects attr"""
         storage = FileStorage()
@@ -128,3 +113,29 @@ class TestFileStorage(unittest.TestCase):
         with open("file.json", "r") as f:
             js = f.read()
         self.assertEqual(json.loads(string), json.loads(js))
+
+    @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
+    def test_count(self):
+        """Test that count method returns accurate count of objects"""
+        storage = FileStorage()
+        # clear objects from storage
+        FileStorage._FileStorage__objects.clear()
+        storage.save()
+        # create new object of each class
+        for key, value in classes.items():
+            instance = value()
+            instance_key = instance.__class__.__name__ + "." + instance.id
+            FileStorage._FileStorage__objects[instance_key] = instance
+        storage.save()
+        self.assertEqual(storage.count(), 7)
+
+    @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
+    def test_get(self):
+        """Test that count method returns object by valid id"""
+        storage = FileStorage()
+        storage.save()
+        # create new object
+        state = State()
+        storage.new(state)
+        state_id = state.to_dict()['id']
+        self.assertTrue(storage.get(State, state_id) is state)

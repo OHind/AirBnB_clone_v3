@@ -6,7 +6,6 @@ Contains the TestDBStorageDocs and TestDBStorage classes
 from datetime import datetime
 import inspect
 import models
-from models import storage
 from models.engine import db_storage
 from models.amenity import Amenity
 from models.base_model import BaseModel
@@ -89,18 +88,34 @@ class TestFileStorage(unittest.TestCase):
         """Test that save properly saves objects to file.json"""
 
     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
-    def test_get(self):
-        """Test get func"""
-        state = State(name="Cairo")
-        state.save()
-        first_obj = list(storage.all().values())[0]
-        clss = first_obj.__class__
-        self.assertEqual(storage.get(clss, first_obj.id), first_obj)
+    def test_count(self):
+        """Test that count method returns an accurate count of objects"""
+        models.storage.reload()
+        state = State(name="Hell")
+        user = User(email="1@2.com", password="123")
+        models.storage.new(state)
+        models.storage.new(user)
+        models.storage.save()
+        self.assertEqual(models.storage.count(), 2)
+        models.storage.delete(user)
+        models.storage.delete(state)
 
     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
-    def test_count(self):
-        """Test count"""
-        state = State(name="Cairo")
-        state.save()
-        count = len(list(storage.all().values()))
-        self.assertEqual(storage.count(), count)
+    def test_get(self):
+        """Test that get method returns object by valid id"""
+        models.storage.reload()
+        user = User(email="1@2.com", password="123")
+        models.storage.new(user)
+        models.storage.save()
+        user_id = user.id
+        wrong_id = '666'
+        self.assertTrue(models.storage.get(User, user_id) is user)
+        self.assertIsNone(models.storage.get(User, wrong_id))
+        models.storage.delete(user)
+        state = State(name='Heaven')
+        models.storage.new(state)
+        models.storage.save()
+        state_id = state.id
+        wrong_id = 'Toast'
+        self.assertTrue(models.storage.get(State, state_id) is state)
+        self.assertIsNone(models.storage.get(State, wrong_id))
