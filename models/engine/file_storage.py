@@ -55,8 +55,8 @@ class FileStorage:
         all_classes = classes.values()
         if not cls:
             cout = 0
-            for class in all_classes:
-                cout += len(models.storage.all(class).values())
+            for obj in all_classes:
+                cout += len(models.storage.all(obj).values())
         else:
             cout = len(models.storage.all(cls).values())
         return count
