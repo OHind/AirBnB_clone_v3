@@ -39,7 +39,7 @@ class FileStorage:
         if obj is not None:
             key = obj.__class__.__name__ + "." + obj.id
             self.__objects[key] = obj
- 
+
     def get(self, cls, id):
         """Retrieve one object"""
         if cls not in classes.values():
@@ -60,7 +60,7 @@ class FileStorage:
         else:
             cout = len(models.storage.all(cls).values())
         return count
- 
+
     def save(self):
         """serializes __objects to the JSON file (path: __file_path)"""
         json_objects = {}

@@ -79,7 +79,7 @@ class DBStorage:
         """ Retreive one object from storage"""
         if cls not in classes.values():
             return None
-        return self.__session;query(cls).filter(cls.id == id).first()
+        return self.__session.query(cls).filter(cls.id == id).first()
 
     def count(self, cls=None):
         """Counts the number of objects in the storage"""
@@ -87,4 +87,3 @@ class DBStorage:
             return len(self.all())
         count = self.__session.query(cls).count()
         return count
-                       
